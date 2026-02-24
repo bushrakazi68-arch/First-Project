@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help & FAQ - HealthyHome Meals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: white;
+    }
+
+    .faq-hero {
+      background: linear-gradient(135deg, #FF0000 0%, #FF4444 50%, #FF6666 100%);
+      color: white;
+      padding: 100px 0;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+    }
+
+    .faq-hero h1 {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .faq-hero p {
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .faq-item {
+      margin-bottom: 1.5rem;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.1);
+      border: 1px solid #FF0000;
+    }
+
+    .faq-header {
+      background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+      color: white;
+      padding: 1.2rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .faq-header:hover {
+      background: linear-gradient(135deg, #CC0000 0%, #8B0000 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+    }
+
+    .faq-body {
+      background: white;
+      padding: 1.5rem;
+      display: none;
+      border: 1px solid #FF0000;
+      border-top: none;
+    }
+
+    .faq-body.show {
+      display: block;
+    }
+
+    .search-box {
+      max-width: 600px;
+      margin: 0 auto 3rem;
+    }
+
+    .search-box input {
+      border: 2px solid #FF0000;
+      border-radius: 25px;
+      padding: 12px 20px;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+      border-color: #CC0000;
+      box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
+    }
+
+    .btn-contact-support {
+      background-color: #FF0000;
+      border-color: #FF0000;
+      color: white;
+      border-radius: 25px;
+      padding: 12px 30px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn-contact-support:hover {
+      background-color: #CC0000;
+      border-color: #CC0000;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #FF0000 0%, #FF4444 50%, #FF6666 100%) !important;
+      box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-link {
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+    }
+
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 25px;
+    }
+
+    .section-title {
+      color: #FF0000;
+      font-weight: bold;
+    }
+
+    .help-section {
+      padding: 3rem 0;
+    }
+
+    .help-icon {
+      color: #FF0000;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Affordable Meals</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="history.html">Order History</a></li>
+          <li class="nav-item"><a class="nav-link" href="help.html">Help</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="subscriptions.html">Subscriptions</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+          <li class="nav-item"><a class="nav-link" href="reviews.html">Reviews</a></li>
+          <li class="nav-item"><a class="nav-link" href="tracking.html">Track your order</a></li>
+          <li class="nav-item"><a class="nav-link active" href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+          <li class="nav-item"><button id="theme-toggle" class="btn btn-outline-light btn-sm"
+              title="Toggle Dark/Light Mode"><i class="fas fa-moon"></i> Dark Mode</button></li>
+          <li class="nav-item"><a class="nav-link" href="join-as-cook.html">Join as Cook</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="faq-hero">
+    <div class="container">
+      <h1 class="display-4 fw-bold">🆘 Help & Support</h1>
+      <p class="lead">Find quick answers or get in touch with us</p>
+    </div>
+  </section>
+
+  <!-- Search & FAQs -->
+  <section class="py-5 help-section">
+    <div class="container">
+      <!-- Search Bar -->
+      <div class="search-box">
+        <input type="text" class="form-control form-control-lg" id="faq-search"
+          placeholder="🔍 Search for help (e.g., delivery, payment, subscription)">
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-header">How do I place an order?</div>
+          <div class="faq-body">
+            <p>1. Browse our menu and add meals to cart</p>
+            <p>2. Go to Cart page</p>
+            <p>3. Review items and click "Place Order"</p>
+            <p>4. Complete payment and track your order</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">What are the delivery charges?</div>
+          <div class="faq-body">
+            <p>Delivery is free for orders above ₹300.</p>
+            <p>Below ₹300 → ₹30 flat charge</p>
+            <p>Priority delivery (faster) → +₹10</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">How do subscriptions work?</div>
+          <div class="faq-body">
+            <p>Choose Weekly (₹500) or Monthly (₹1800) plan.</p>
+            <p>Get 1 meal/day for the selected duration.</p>
+            <p>Auto-renews, cancel anytime from your profile.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">Can I cancel or change my order?</div>
+          <div class="faq-body">
+            <p>Orders can be cancelled within 5 minutes of placing.</p>
+            <p>Contact support immediately for changes.</p>
+            <p>After preparation starts, no cancellations possible.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">How do I pay?</div>
+          <div class="faq-body">
+            <p>Options: UPI, Credit/Debit Card, Cash on Delivery, Wallet</p>
+            <p>All payments are secure and encrypted.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">What if my order is late?</div>
+          <div class="faq-body">
+            <p>We track every order in real-time.</p>
+            <p>If delayed >10 min, you'll get ₹20 discount on next order.</p>
+            <p>Contact us if delay is longer.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header">Do you have Jain / Veg-only meals?</div>
+          <div class="faq-body">
+            <p>Yes! All our meals have clear Veg/Jain labels.</p>
+            <p>We have dedicated Jain kitchen for pure Jain meals.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Still need help? -->
+      <div class="text-center mt-5">
+        <h4 class="section-title">Still need help? 🤔</h4>
+        <a href="contact.html" class="btn btn-primary btn-lg px-5 mt-3 btn-contact-support">📞 Contact Support</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- FAQ Search & Toggle -->
+  <script>
+    // FAQ Toggle
+    document.querySelectorAll('.faq-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const body = header.nextElementSibling;
+        body.classList.toggle('show');
+      });
+    });
+
+    // FAQ Search
+    document.getElementById('faq-search')?.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(term) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+
+</html>

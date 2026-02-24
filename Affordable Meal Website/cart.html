@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart - HealthyHome Meals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background: white;
+      background-attachment: fixed;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+    }
+
+    /* Theme-aware styles for cart page */
+    [data-theme="dark"] body {
+      background: #1a1a1a !important;
+      color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .cart-page-body {
+      background: #1a1a1a !important;
+    }
+
+    [data-theme="dark"] .hero-section {
+      background: linear-gradient(135deg, #8B0000 0%, #2F4F4F 100%) !important;
+    }
+
+    [data-theme="dark"] .glass-card {
+      background: #2d2d2d !important;
+      border-color: #444444 !important;
+    }
+
+    [data-theme="dark"] .glass-card h3 {
+      color: #FF4444 !important;
+    }
+
+    [data-theme="dark"] .summary-item span {
+      color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .total-section {
+      background: linear-gradient(135deg, #8B0000, #CC0000) !important;
+    }
+
+    [data-theme="dark"] #cart-items {
+      color: #ffffff !important;
+    }
+
+    [data-theme="dark"] #cart-items * {
+      color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .empty-cart-message {
+      color: #b0b0b0 !important;
+    }
+
+    [data-theme="dark"] .priority-checkbox {
+      background: rgba(255, 179, 71, 0.2) !important;
+      border-color: rgba(255, 179, 71, 0.5) !important;
+    }
+
+    [data-theme="dark"] .priority-checkbox-label {
+      color: #FFB347 !important;
+    }
+
+    [data-theme="dark"] .payment-note {
+      background: rgba(40, 167, 69, 0.2) !important;
+      border-color: rgba(40, 167, 69, 0.5) !important;
+    }
+
+    [data-theme="dark"] .payment-note p {
+      color: #90EE90 !important;
+    }
+
+    [data-theme="dark"] .hr-divider {
+      border-color: #444444 !important;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #FF0000 0%, #FF4444 50%, #FF6666 100%) !important;
+      backdrop-filter: blur(15px);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+      border-radius: 0 0 15px 15px;
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-nav .nav-link {
+      font-weight: 600;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .navbar-nav .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .navbar-nav .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .navbar-toggler {
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      padding: 8px 12px;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-toggler:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: scale(1.05);
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* Off-Canvas Navigation Styles */
+    .offcanvas-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 1040;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .offcanvas-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .offcanvas-menu {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 300px;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
+      z-index: 1050;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .offcanvas-menu.active {
+      left: 0;
+    }
+
+    .offcanvas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #e9ecef;
+      background: #FF0000;
+      color: white;
+    }
+
+    .offcanvas-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .offcanvas-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .offcanvas-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .offcanvas-body {
+      padding: 20px 0;
+    }
+
+    .offcanvas-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .offcanvas-link {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      color: #495057;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid #f8f9fa;
+      position: relative;
+    }
+
+    .offcanvas-link:hover {
+      background: rgba(255, 0, 0, 0.1);
+      color: #FF0000;
+      padding-left: 30px;
+    }
+
+    .offcanvas-link.active {
+      background: #FF0000;
+      color: white;
+    }
+
+    .offcanvas-link i {
+      margin-right: 15px;
+      width: 20px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .offcanvas-link span {
+      font-weight: 500;
+    }
+
+    .offcanvas-divider {
+      height: 1px;
+      background: #e9ecef;
+      margin: 20px 0;
+    }
+
+    .offcanvas-auth {
+      padding: 0 20px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      color: white;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-right: 15px;
+    }
+
+    .menu-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 991px) {
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    .glass-card {
+      background: white;
+      backdrop-filter: blur(15px);
+      border: 1px solid #FF0000;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(255, 0, 0, 0.1);
+    }
+
+    .btn-gradient {
+      background: #FF0000;
+      border: none;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .btn-outline-danger {
+      border-color: #FF0000;
+      color: #FF0000;
+      background: white;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-outline-danger:hover {
+      background: #FF0000;
+      border-color: #FF0000;
+      color: white;
+    }
+
+    .form-check-input:checked {
+      background-color: #FF0000;
+      border-color: #FF0000;
+    }
+
+    .modal-content {
+      background: white;
+      backdrop-filter: blur(20px);
+      border: 1px solid #FF0000;
+      border-radius: 20px;
+    }
+
+    .text-muted {
+      color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .btn-primary {
+      background: #FF0000;
+      border: none;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #CC0000;
+    }
+
+    /* Cart items styling - now theme aware */
+    #cart-items {
+      color: #333;
+    }
+
+    #cart-items .cart-item {
+      color: #333;
+    }
+
+    [data-theme="dark"] #cart-items {
+      color: #fff;
+    }
+
+    [data-theme="dark"] #cart-items .cart-item {
+      color: #fff;
+    }
+
+    [data-theme="dark"] #cart-items .cart-item small {
+      color: #aaa !important;
+    }
+  </style>
+</head>
+
+<body class="cart-page-body">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Affordable Meals</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="history.html">Order History</a></li>
+          <li class="nav-item"><a class="nav-link" href="help.html">Help</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="subscriptions.html">Subscriptions</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+          <li class="nav-item"><a class="nav-link active" href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+          <li class="nav-item"><button id="theme-toggle" class="btn btn-outline-light btn-sm" title="Toggle Dark/Light Mode"><i class="fas fa-moon"></i> Dark Mode</button></li>
+          <li class="nav-item"><a class="nav-link" href="join-as-cook.html">Join as Cook</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <!-- Hero Section -->
+        <div class="hero-section text-center mb-5 p-5 rounded-4" style="background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%); color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+          <h1 class="display-3 fw-bold mb-3" style="text-shadow: 3px 3px 6px rgba(0,0,0,0.3);">🛒 Your Delicious Cart</h1>
+          <p class="lead fs-4 mb-0" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">Review your tasty selections and get ready for a flavor-packed delivery!</p>
+          <div class="mt-4">
+            <i class="fas fa-utensils fa-3x text-warning"></i>
+            <i class="fas fa-heart fa-3x text-danger mx-3"></i>
+            <i class="fas fa-star fa-3x text-warning"></i>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Cart Items Section -->
+          <div class="col-lg-8 mb-4">
+            <div class="glass-card p-4 h-100">
+              <h3 class="mb-4 text-center" style="color: #FF0000; font-weight: bold;">
+                <i class="fas fa-shopping-basket me-2"></i>Your Selected Meals
+              </h3>
+              <div id="cart-items" class="mb-4">
+                <!-- Cart items will be populated here -->
+              </div>
+              <div class="text-center" id="empty-cart-message" style="display: none;">
+                <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">Your cart is empty</h4>
+                <p class="text-muted">Add some delicious meals from our menu!</p>
+                <a href="menu.html" class="btn btn-gradient btn-lg">
+                  <i class="fas fa-utensils me-2"></i>Browse Menu
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Summary Section -->
+          <div class="col-lg-4">
+            <div class="glass-card p-4 sticky-top" style="top: 20px;">
+              <h4 class="mb-4 text-center" style="color: #FF0000; font-weight: bold;">
+                <i class="fas fa-receipt me-2"></i>Order Summary
+              </h4>
+
+      <div class="summary-item d-flex justify-content-between mb-3">
+        <span class="subtotal-label" style="font-weight: 500;">Subtotal:</span>
+        <span class="subtotal-value" style="font-weight: bold;">₹<span id="subtotal">0</span></span>
+      </div>
+
+      <div class="summary-item d-flex justify-content-between mb-3">
+        <span class="text-success discount-label" style="font-weight: 500;">Combo Discount (3+ items):</span>
+        <span class="text-success discount-value" style="font-weight: bold;">-₹<span id="discount">0</span></span>
+      </div>
+
+      <div class="form-check mb-4 p-3 rounded-3 priority-checkbox" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3);">
+        <input class="form-check-input" type="checkbox" id="priority-delivery">
+        <label class="form-check-label fw-bold priority-checkbox-label" style="color: #856404;" for="priority-delivery">
+          <i class="fas fa-rocket me-2"></i>🚀 Priority Delivery (+₹10 – faster delivery)
+        </label>
+      </div>
+
+      <hr class="my-4 hr-divider" style="border-color: rgba(255, 0, 0, 0.3); border-width: 2px;">
+
+              <div class="total-section d-flex justify-content-between align-items-center mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, #FF0000, #FF4444); color: white;">
+                <h4 class="mb-0" style="font-weight: bold;">Total:</h4>
+                <h4 class="mb-0" style="font-weight: bold;">₹<span id="total">0</span></h4>
+              </div>
+
+              <div class="d-grid gap-3">
+                <button id="place-order" class="btn btn-success btn-lg fw-bold pulse-animation">
+                  <i class="fas fa-credit-card me-2"></i>🛍️ Place Order Now
+                </button>
+                <button id="clear-cart" class="btn btn-outline-danger btn-lg fw-bold">
+                  <i class="fas fa-trash-alt me-2"></i>🗑️ Clear Cart
+                </button>
+              </div>
+
+      <div class="text-center mt-4 p-3 rounded-3 payment-note" style="background: rgba(40, 167, 69, 0.1); border: 1px solid rgba(40, 167, 69, 0.3);">
+        <p class="mb-0" style="font-weight: 500;">
+          <i class="fas fa-shield-alt me-2"></i>💯 Surge-Free Pricing – No hidden charges!
+        </p>
+      </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Payment Modal -->
+  <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="paymentModalLabel">Complete Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-center mb-4">Total Amount: <strong id="modal-total">₹0</strong></p>
+  
+          <div class="mb-3">
+            <label class="form-label">Payment Method</label>
+            <select class="form-select" id="payment-method">
+              <option value="upi">UPI (Google Pay, PhonePe, etc.)</option>
+              <option value="card">Credit / Debit Card</option>
+              <option value="cod">Cash on Delivery</option>
+              <option value="wallet">Pay with Wallet</option>
+            </select>
+          </div>
+  
+          <!-- Wallet balance check (shown only if wallet selected) -->
+          <p id="wallet-info" class="text-center text-muted d-none">
+            Wallet Balance: <span id="wallet-balance">₹0</span>
+          </p>
+  
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-primary btn-lg w-100" id="confirm-payment">
+              Pay Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="script-new.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Theme initialization script -->
+  <script>
+    // Initialize theme on page load
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        const icon = themeToggle.querySelector('i');
+        if (savedTheme === 'dark') {
+          if (icon) icon.className = 'fas fa-sun';
+          themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+        } else {
+          if (icon) icon.className = 'fas fa-moon';
+          themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+        }
+      }
+    })();
+  </script>
+</body>
+
+</html>

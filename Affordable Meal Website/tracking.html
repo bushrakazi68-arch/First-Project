@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Order - HealthyHome Meals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: white;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar {
+      background: red !important;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    }
+
+    .progress-bar {
+      height: 30px;
+      font-size: 1.1rem;
+      line-height: 30px;
+      background: linear-gradient(45deg, #ff0000, #cc0000);
+    }
+
+    .status-step {
+      text-align: center;
+      padding: 15px;
+      border-radius: 10px;
+      transition: all 0.3s;
+      border: 2px solid white;
+    }
+
+    .status-step.active {
+      background: linear-gradient(45deg, #ff0000, #cc0000);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .status-step.past {
+      background: #e0e0e0;
+      color: #555;
+    }
+
+    .status-step.future {
+      background: white;
+      color: #777;
+    }
+
+    .order-summary {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    h2 {
+      color: red !important;
+      font-weight: bold;
+    }
+
+    h4, h5 {
+      color: red !important;
+      font-weight: 600;
+    }
+
+    .text-muted {
+      color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .list-group-item {
+      background: white;
+      border: 1px solid white;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Affordable Meals</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="history.html">Order History</a></li>
+          <li class="nav-item"><a class="nav-link" href="help.html">Help</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="subscriptions.html">Subscriptions</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+          <li class="nav-item"><a class="nav-link" href="reviews.html">Reviews</a></li>
+          <li class="nav-item"><a class="nav-link active" href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+          <li class="nav-item"><button id="theme-toggle" class="btn btn-outline-light btn-sm"
+              title="Toggle Dark/Light Mode"><i class="fas fa-moon"></i> Dark Mode</button></li>
+          <li class="nav-item"><a class="nav-link" href="join-as-cook.html">Join as Cook</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5 pt-5">
+    <h2 class="text-center mb-5">Track Your Order</h2>
+
+    <div id="no-order" class="text-center text-muted d-none">
+      <p>No order selected. Please go to <a href="history.html">Order History</a> or place a new order.</p>
+    </div>
+
+    <div id="order-details" class="order-summary mb-5 d-none">
+      <h4>Order #<span id="order-id"></span></h4>
+      <p><strong>Date:</strong> <span id="order-date"></span></p>
+      <p><strong>Total:</strong> ₹<span id="order-total"></span></p>
+      <p><strong>Payment:</strong> <span id="payment-method"></span></p>
+      <p><strong>Items:</strong> <span id="item-count"></span></p>
+
+      <h5 class="mt-4">Order Progress</h5>
+      <div class="progress mb-4">
+        <div id="progress-bar" class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+          role="progressbar" style="width: 0%">
+          0%
+        </div>
+      </div>
+
+      <div class="row text-center">
+        <div class="col-4 status-step" id="step-preparing">
+          <i class="fas fa-utensils fa-2x mb-2"></i><br>
+          Preparing
+        </div>
+        <div class="col-4 status-step" id="step-out">
+          <i class="fas fa-motorcycle fa-2x mb-2"></i><br>
+          Out for Delivery
+        </div>
+        <div class="col-4 status-step" id="step-delivered">
+          <i class="fas fa-check-circle fa-2x mb-2"></i><br>
+          Delivered
+        </div>
+      </div>
+
+      <h5 class="mt-4">Estimated Time Remaining</h5>
+      <p class="fs-4 fw-bold" id="eta-time">Calculating...</p>
+
+      <h5 class="mt-4">Items in Order</h5>
+      <ul id="order-items-list" class="list-group"></ul>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="script-new.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Tracking Logic -->
+  <script type="module">
+    import { db, getDoc, doc } from './firebase-config.js';
+
+    async function loadTracking() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('orderId');
+
+      const orderDetails = document.getElementById('order-details');
+      const noOrder = document.getElementById('no-order');
+
+      if (!orderId) {
+        noOrder.classList.remove('d-none');
+        orderDetails.classList.add('d-none');
+        return;
+      }
+
+      noOrder.classList.add('d-none');
+      orderDetails.classList.remove('d-none');
+
+      try {
+        const orderRef = doc(db, 'orders', orderId);
+        const orderSnap = await getDoc(orderRef);
+
+        if (!orderSnap.exists()) {
+          orderDetails.innerHTML = '<p class="text-danger text-center">Order not found. Please check the order ID.</p>';
+          return;
+        }
+
+        const order = orderSnap.data();
+
+        // Fill order info
+        document.getElementById('order-id').textContent = orderId.slice(0, 8);
+        document.getElementById('order-date').textContent = new Date(order.timestamp.seconds * 1000).toLocaleString();
+        document.getElementById('order-total').textContent = order.total || 0;
+        document.getElementById('payment-method').textContent = order.paymentMethod || 'Unknown';
+        document.getElementById('item-count').textContent = order.items?.length || 0;
+
+        // Items list
+        const itemsList = document.getElementById('order-items-list');
+        itemsList.innerHTML = '';
+        order.items.forEach(item => {
+          itemsList.innerHTML += `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              ${item.name} × ${item.quantity || 1}
+              <span>₹${(item.price * (item.quantity || 1)).toFixed(2)}</span>
+            </li>
+          `;
+        });
+
+        // Progress & ETA
+        const status = order.status?.toLowerCase() || 'preparing';
+        const etaMinutes = order.etaMinutes || 30;
+        let progressPercent = 0;
+
+        if (status === 'preparing') progressPercent = 33;
+        else if (status === 'out' || status === 'out for delivery') progressPercent = 66;
+        else if (status === 'delivered') progressPercent = 100;
+
+        document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+        document.getElementById('progress-bar').textContent = `${progressPercent}%`;
+
+        document.getElementById('eta-time').textContent = status === 'delivered'
+          ? 'Delivered!'
+          : `ETA: \~${etaMinutes} minutes`;
+
+        // Highlight current step
+        ['preparing', 'out', 'delivered'].forEach(step => {
+          const el = document.getElementById(`step-${step}`);
+          if (step === status) el.classList.add('active');
+          else if (['preparing', 'out', 'delivered'].indexOf(step) < ['preparing', 'out', 'delivered'].indexOf(status)) {
+            el.classList.add('past');
+          } else {
+            el.classList.add('future');
+          }
+        });
+
+      } catch (error) {
+        console.error("Error loading order:", error);
+        orderDetails.innerHTML = '<p class="text-danger text-center">Failed to load order details. Please try again.</p>';
+      }
+    }
+
+    // Run when page loads
+    loadTracking();
+  </script>
+</body>
+
+</html>

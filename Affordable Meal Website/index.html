@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthyHome Meals - Fresh & Healthy Tiffins</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: url('Delivery-photo.png') no-repeat center center fixed;
+      background-size: cover;
+      background-attachment: fixed;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #FF0000;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #FF0000 0%, #FF4444 50%, #FF6666 100%) !important;
+      backdrop-filter: blur(15px);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+      border-radius: 0 0 15px 15px;
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-nav .nav-link {
+      font-weight: 600;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .navbar-nav .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .navbar-nav .nav-link:hover::before {
+      left: 100%;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .navbar-toggler {
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      padding: 8px 12px;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-toggler:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: scale(1.05);
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .glass-card {
+      background: white;
+      backdrop-filter: blur(15px);
+      border: 1px solid #FF0000;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(255, 0, 0, 0.1);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      color: #FF0000;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-gradient {
+      background: #FF0000;
+      border: none;
+      color: white;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .btn-gradient:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5);
+    }
+
+    .btn-outline-gradient {
+      border: 2px solid #FF0000;
+      color: #FF0000;
+      background: white;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-gradient:hover {
+      background: #FF0000;
+      transform: translateY(-5px);
+      border-color: #FF0000;
+      color: white;
+    }
+
+    .meal-card {
+      transition: all 0.4s ease;
+      border: 1px solid #FF0000;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(255, 0, 0, 0.1);
+      background: white;
+      backdrop-filter: blur(15px);
+    }
+
+    .meal-card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 20px 40px rgba(255, 0, 0, 0.15);
+    }
+
+    .enhanced-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-img-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .enhanced-img {
+      transition: transform 0.4s ease;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .enhanced-card:hover .enhanced-img {
+      transform: scale(1.1);
+    }
+
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .enhanced-card:hover .card-overlay {
+      opacity: 1;
+    }
+
+    .quick-add-btn {
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .enhanced-card:hover .quick-add-btn {
+      transform: translateY(0);
+    }
+
+    .testimonial-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      border: 1px solid #e9ecef;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      background: #FF0000;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .text-white {
+      color: white !important;
+    }
+
+    .text-white-50 {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    footer {
+      background: white;
+      backdrop-filter: blur(15px);
+      color: #FF0000;
+      padding: 3rem 0;
+      border-top: 1px solid #FF0000;
+    }
+
+    /* Off-Canvas Navigation Styles */
+    .offcanvas-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 1040;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .offcanvas-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .offcanvas-menu {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 300px;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
+      z-index: 1050;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .offcanvas-menu.active {
+      left: 0;
+    }
+
+    .offcanvas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #e9ecef;
+      background: #FF0000;
+      color: white;
+    }
+
+    .offcanvas-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .offcanvas-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .offcanvas-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .offcanvas-body {
+      padding: 20px 0;
+    }
+
+    .offcanvas-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .offcanvas-link {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      color: #495057;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid #f8f9fa;
+      position: relative;
+    }
+
+    .offcanvas-link:hover {
+      background: rgba(255, 0, 0, 0.1);
+      color: #FF0000;
+      padding-left: 30px;
+    }
+
+    .offcanvas-link.active {
+      background: #FF0000;
+      color: white;
+    }
+
+    .offcanvas-link i {
+      margin-right: 15px;
+      width: 20px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .offcanvas-link span {
+      font-weight: 500;
+    }
+
+    .offcanvas-divider {
+      height: 1px;
+      background: #e9ecef;
+      margin: 20px 0;
+    }
+
+    .offcanvas-auth {
+      padding: 0 20px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      color: white;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-right: 15px;
+    }
+
+    .menu-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 991px) {
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Off-Canvas Navigation Overlay -->
+  <div class="offcanvas-overlay" id="offcanvas-overlay"></div>
+
+  <!-- Off-Canvas Navigation Drawer -->
+  <div class="offcanvas-menu" id="offcanvas-menu">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">🍽️ HealthyHome Meals</h5>
+      <button class="offcanvas-close" id="offcanvas-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="offcanvas-body">
+      <nav class="offcanvas-nav">
+        <a href="index.html" class="offcanvas-link active">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+        <a href="menu.html" class="offcanvas-link">
+          <i class="fas fa-utensils"></i>
+          <span>Menu</span>
+        </a>
+        <a href="cart.html" class="offcanvas-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Cart (<span id="cart-count-mobile">0</span>)</span>
+        </a>
+        <a href="reviews.html" class="offcanvas-link">
+          <i class="fas fa-star"></i>
+          <span>Reviews</span>
+        </a>
+        <a href="profile.html" class="offcanvas-link">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+        <a href="contact.html" class="offcanvas-link">
+          <i class="fas fa-envelope"></i>
+          <span>Contact</span>
+        </a>
+        <a href="help.html" class="offcanvas-link">
+          <i class="fas fa-question-circle"></i>
+          <span>Help</span>
+        </a>
+        <div class="offcanvas-divider"></div>
+        <div class="offcanvas-auth">
+          <a href="login.html" class="offcanvas-link" id="login-link-mobile">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Login</span>
+          </a>
+          <a href="#" class="offcanvas-link text-danger" id="logout-link-mobile" style="display: none;">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <button class="menu-toggle" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a class="navbar-brand fw-bold fs-4" href="index.html">HealthyHome Meals</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+          <li class="nav-item"><a class="nav-link" href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+          <li class="nav-item"><a class="nav-link" href="reviews.html">Reviews</a></li>
+          <li class="nav-item"><a class="nav-link" href="tracking.html">Track your order</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="join-as-cook.html">Join as Cook</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="kontakDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Kontak
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="kontakDropdown">
+              <li><a class="dropdown-item" href="https://instagram.com" target="_blank"><i class="fab fa-instagram me-2"></i>Instagram</a></li>
+              <li><a class="dropdown-item" href="https://tiktok.com" target="_blank"><i class="fab fa-tiktok me-2"></i>TikTok</a></li>
+              <li><a class="dropdown-item" href="https://wa.me" target="_blank"><i class="fab fa-whatsapp me-2"></i>WhatsApp</a></li>
+            </ul>
+          </li>
+          <li class="nav-item d-none" id="logout-item">
+            <a class="nav-link text-danger fw-bold" href="#" id="logout-btn">Logout</a>
+          </li>
+          <li class="nav-item d-none" id="login-item">
+            <a class="nav-link btn btn-outline-light ms-2 px-4 py-2" href="login.html">Login</a>
+          </li>
+          <li class="nav-item"><button id="theme-toggle" class="btn btn-outline-light btn-sm"
+              title="Toggle Dark/Light Mode"><i class="fas fa-moon"></i> Dark Mode</button></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section with Carousel -->
+  <section class="hero d-flex align-items-center justify-content-center">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative">
+      <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="hero-content text-center">
+              <h1 class="display-3 fw-bold mb-4 animate-slide-up">HealthyHome Meals</h1>
+              <p class="lead mb-5 fs-4 animate-slide-up delay-1">Ghar ka khana, dil se banaya – fresh tiffins delivered daily</p>
+              <div class="d-flex justify-content-center gap-4 flex-wrap animate-slide-up delay-2">
+                <a href="menu.html" class="btn btn-gradient btn-lg">Order Now</a>
+                <a href="cart.html" class="btn btn-outline-gradient btn-lg">View Cart</a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="hero-content text-center">
+              <h1 class="display-3 fw-bold mb-4 animate-slide-up">Fresh & Nutritious</h1>
+              <p class="lead mb-5 fs-4 animate-slide-up delay-1">Balanced meals packed with love and health</p>
+<div class="d-flex justify-content-center gap-4 flex-wrap mt-5">
+                <a href="menu.html" class="btn btn-gradient btn-lg px-5">
+                  <i class="fas fa-utensils me-2"></i> Order Food (Customers)
+                </a>
+              
+                <a href="join-as-cook.html" class="btn btn-outline-success btn-lg px-5">
+                  <i class="fas fa-chef-hat me-2"></i> Join as Cook
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="hero-content text-center">
+              <h1 class="display-3 fw-bold mb-4 animate-slide-up">Delivered to Your Door</h1>
+              <p class="lead mb-5 fs-4 animate-slide-up delay-1">Fast, reliable delivery with live tracking</p>
+              <div class="d-flex justify-content-center gap-4 flex-wrap animate-slide-up delay-2">
+                <a href="menu.html" class="btn btn-gradient btn-lg">Start Ordering</a>
+                <a href="contact.html" class="btn btn-outline-gradient btn-lg">Contact Us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Meals -->
+  <section class="py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold" style="color: black; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🍽️ Hamare Popular
+          Meals</h2>
+        <p class="lead" style="color: black;">Try our most loved dishes by our customers</p>
+      </div>
+      <div class="row g-4" id="featured-meals"></div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold" style="color: #FF0000; text-shadow: 2px 2px 4px rgba(255,0,0,0.3);">✨ Kyun Choose
+          Kare HealthyHome Meals?</h2>
+        <p class="lead" style="color: #FF0000;">What makes us different from others</p>
+      </div>
+      <div class="row text-center g-4">
+        <div class="col-md-4">
+          <div class="glass-card h-100 p-4">
+            <div class="card-body">
+              <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+              <h4 style="color: #FF0000;" class="mb-3">Taza & Healthy</h4>
+              <p style="color: #FF0000;">Ghar jaisa khana, balanced nutrition, bina preservatives.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card h-100 p-4">
+            <div class="card-body">
+              <div class="feature-icon"><i class="fas fa-rupee-sign"></i></div>
+              <h4 style="color: #FF0000;" class="mb-3">Budget Friendly</h4>
+              <p style="color: #FF0000;">₹60 se start – sabke liye healthy khana.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card h-100 p-4">
+            <div class="card-body">
+              <div class="feature-icon"><i class="fas fa-motorcycle"></i></div>
+              <h4 style="color: #FF0000;" class="mb-3">Fast Delivery</h4>
+              <p style="color: #FF0000;">Time pe delivery, live tracking ke saath.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Testimonials -->
+  <section class="py-5 bg-light fade-in-section">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold" style="color: #FF0000; text-shadow: 2px 2px 4px rgba(255,0,0,0.3);">💬 What Our
+          Customers Say</h2>
+        <p class="lead" style="color: #FF0000;">Real reviews from happy customers</p>
+      </div>
+      <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="testimonial-card p-4 mx-auto" style="max-width: 600px;">
+              <div class="d-flex align-items-center mb-3">
+                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"
+                  alt="Customer" class="rounded-circle me-3" style="width: 60px; height: 60px;">
+                <div>
+                  <h6 class="mb-0 fw-bold">Priya Sharma</h6>
+                  <small class="text-muted">Regular Customer</small>
+                </div>
+              </div>
+              <div class="mb-3">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+              </div>
+              <p class="mb-0">"Amazing quality and taste! The meals are fresh and nutritious. Perfect for busy
+                professionals like me."</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="testimonial-card p-4 mx-auto" style="max-width: 600px;">
+              <div class="d-flex align-items-center mb-3">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+                  alt="Customer" class="rounded-circle me-3" style="width: 60px; height: 60px;">
+                <div>
+                  <h6 class="mb-0 fw-bold">Rajesh Kumar</h6>
+                  <small class="text-muted">Family Subscriber</small>
+                </div>
+              </div>
+              <div class="mb-3">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+              </div>
+              <p class="mb-0">"Best tiffin service in Mumbai! My whole family loves the variety and the affordable
+                prices."</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="testimonial-card p-4 mx-auto" style="max-width: 600px;">
+              <div class="d-flex align-items-center mb-3">
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
+                  alt="Customer" class="rounded-circle me-3" style="width: 60px; height: 60px;">
+                <div>
+                  <h6 class="mb-0 fw-bold">Anjali Patel</h6>
+                  <small class="text-muted">Health Conscious</small>
+                </div>
+              </div>
+              <div class="mb-3">
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+                <i class="fas fa-star text-warning"></i>
+              </div>
+              <p class="mb-0">"Love the healthy options! The Jain meals are perfect and delivery is always on time."</p>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Food Gallery -->
+  <section class="py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold" style="color: black; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">📸 Our Food
+          Gallery</h2>
+        <p class="lead" style="color: black;">A glimpse of our delicious meals</p>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-4 col-sm-6">
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop"
+              alt="Healthy Thali" class="w-100" style="height: 250px; object-fit: cover;">
+            <div class="gallery-overlay">
+              <h5 class="text-white fw-bold">Healthy Thali</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop"
+              alt="Quinoa Salad" class="w-100" style="height: 250px; object-fit: cover;">
+            <div class="gallery-overlay">
+              <h5 class="text-white fw-bold">Quinoa Salad</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&h=300&fit=crop"
+              alt="Veggie Meal" class="w-100" style="height: 250px; object-fit: cover;">
+            <div class="gallery-overlay">
+              <h5 class="text-white fw-bold">Veggie Meal</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-5 text-center">
+    <div class="container">
+      <div class="glass-card p-5">
+        <h3 style="color: #FF0000; text-shadow: 2px 2px 4px rgba(255,0,0,0.3);" class="mb-4">🚀 Aaj se Healthy Khana
+          Shuru Kare?</h3>
+        <a href="menu.html" class="btn btn-gradient btn-lg px-5 py-3 fw-bold">
+          📋 Menu Dekho
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-4 text-center">
+    <div class="container">
+      <p style="color: #FF0000;">© 2026 HealthyHome Meals. Made with ❤️ in Mumbai.</p>
+      <div class="mt-3">
+        <a href="#" style="color: #FF0000;" class="mx-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+        <a href="#" style="color: #FF0000;" class="mx-3"><i class="fab fa-instagram fa-lg"></i></a>
+        <a href="#" style="color: #FF0000;" class="mx-3"><i class="fab fa-whatsapp fa-lg"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="script-new.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Animation Script -->
+  <script>
+    // Intersection Observer for fade-in animations
+    document.addEventListener('DOMContentLoaded', () => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in');
+          }
+        });
+      }, observerOptions);
+
+      // Observe sections for fade-in
+      document.querySelectorAll('.fade-in-section').forEach(section => {
+        observer.observe(section);
+      });
+
+      // Start hero carousel animation
+      const heroCarousel = document.getElementById('heroCarousel');
+      if (heroCarousel) {
+        // Auto-advance carousel every 5 seconds
+        setInterval(() => {
+          const bsCarousel = new bootstrap.Carousel(heroCarousel);
+          bsCarousel.next();
+        }, 5000);
+      }
+    });
+  </script>
+
+  <!-- Theme Toggle Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeToggleButton(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          updateThemeToggleButton(newTheme);
+        });
+      }
+    });
+
+    function updateThemeToggleButton(theme) {
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        if (theme === 'dark') {
+          themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+        } else {
+          themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+        }
+      }
+    }
+  </script>
+
+  <!-- Featured Meals Script -->
+  <script>
+    function loadFeaturedMeals() {
+      const container = document.getElementById('featured-meals');
+      if (!container) return;
+
+      const featured = [
+        { name: "Paneer Bhurji + Roti", price: 110, image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=800", calories: 520, protein: 28 },
+        { name: "Dal Rice + Roti", price: 60, image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800", calories: 450, protein: 12 },
+        { name: "Jain Pav Bhaji", price: 90, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800", calories: 420, protein: 8 }
+      ];
+
+      featured.forEach(item => {
+        container.innerHTML += `
+          <div class="col-md-4">
+            <div class="card meal-card enhanced-card">
+              <div class="card-img-wrapper">
+                <img src="${item.image}" class="card-img-top enhanced-img" alt="${item.name}">
+                <div class="card-overlay">
+                  <button class="btn btn-success quick-add-btn" data-name="${item.name}" data-price="${item.price}" data-image="${item.image}" data-calories="${item.calories}" data-protein="${item.protein}">
+                    <i class="fas fa-cart-plus"></i> Quick Add
+                  </button>
+                </div>
+              </div>
+              <div class="card-body text-center">
+                <h5 class="card-title fw-bold">${item.name}</h5>
+                <p class="text-success fw-bold fs-5 mb-2">₹${item.price}</p>
+                <small class="text-muted">${item.calories} cal • ${item.protein}g protein</small>
+                <br>
+                <a href="menu.html" class="btn btn-outline-primary mt-3">View Details</a>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      // Add event listeners for quick add buttons
+      document.querySelectorAll('.quick-add-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const item = {
+            name: this.dataset.name,
+            price: parseInt(this.dataset.price),
+            image: this.dataset.image,
+            calories: parseInt(this.dataset.calories),
+            protein: parseInt(this.dataset.protein),
+            type: "Featured Meal"
+          };
+
+          // Add to cart (assuming cart is global from script-new.js)
+          if (typeof cart !== 'undefined') {
+            cart.push(item);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(`${item.name} added to cart!`);
+          } else {
+            alert('Cart not available. Please refresh the page.');
+          }
+        });
+      });
+    }
+    loadFeaturedMeals();
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+
+  <!-- Login/Logout Logic -->
+  <script type="module">
+    import { auth, onAuthStateChanged } from './firebase-config.js';
+
+    onAuthStateChanged(auth, (user) => {
+      const loginItem = document.getElementById('login-item');
+      const logoutItem = document.getElementById('logout-item');
+
+      if (user) {
+        loginItem?.classList.add('d-none');
+        logoutItem?.classList.remove('d-none');
+      } else {
+        loginItem?.classList.remove('d-none');
+        logoutItem?.classList.add('d-none');
+      }
+    });
+
+    // Logout – Redirect to home page
+    document.getElementById('logout-btn')?.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await auth.signOut();
+      alert("Logged out successfully!");
+      window.location.href = 'index.html';  // Back to home page
+    });
+  </script>
+
+  <!-- Off-Canvas Navigation Script -->
+  <script>
+    // Off-canvas menu functionality
+    const menuToggle = document.getElementById('menu-toggle');
+    const offcanvasMenu = document.getElementById('offcanvas-menu');
+    const offcanvasOverlay = document.getElementById('offcanvas-overlay');
+    const offcanvasClose = document.getElementById('offcanvas-close');
+    const logoutLinkMobile = document.getElementById('logout-link-mobile');
+
+    // Function to open menu
+    function openMenu() {
+      offcanvasMenu.classList.add('active');
+      offcanvasOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    // Function to close menu
+    function closeMenu() {
+      offcanvasMenu.classList.remove('active');
+      offcanvasOverlay.classList.remove('active');
+      document.body.style.overflow = ''; // Restore scrolling
+    }
+
+    // Event listeners
+    menuToggle.addEventListener('click', openMenu);
+    offcanvasClose.addEventListener('click', closeMenu);
+    offcanvasOverlay.addEventListener('click', closeMenu);
+
+    // Close menu when clicking on menu links
+    document.querySelectorAll('.offcanvas-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Only close if it's not the logout link (which needs confirmation)
+        if (!e.target.closest('#logout-link-mobile')) {
+          closeMenu();
+        }
+      });
+    });
+
+    // Mobile logout functionality
+    logoutLinkMobile.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await auth.signOut();
+      alert("Logged out successfully!");
+      closeMenu();
+      window.location.href = 'index.html';
+    });
+
+    // Update cart count in mobile menu
+    function updateCartCountMobile() {
+      const cartCountMobile = document.getElementById('cart-count-mobile');
+      if (cartCountMobile && typeof cart !== 'undefined') {
+        cartCountMobile.textContent = cart.length;
+      }
+    }
+
+    // Update cart count on page load and when cart changes
+    updateCartCountMobile();
+
+    // Listen for cart updates (assuming updateCartCount is defined in script-new.js)
+    if (typeof updateCartCount === 'function') {
+      // Override the original function to also update mobile count
+      const originalUpdateCartCount = updateCartCount;
+      updateCartCount = function () {
+        originalUpdateCartCount();
+        updateCartCountMobile();
+      };
+    }
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && offcanvasMenu.classList.contains('active')) {
+        closeMenu();
+      }
+    });
+
+    // Prevent menu from closing when clicking inside the menu
+    offcanvasMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  </script>
+</body>
+
+</html>

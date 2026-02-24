@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cook Dashboard - HealthyHome Meals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-color: #ffffff !important;
+      color: #000000;
+      min-height: 100vh;
+    }
+
+    .dashboard-header {
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      color: white;
+      padding: 2rem 0;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      border: 2px solid #ff0000;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: #ff0000;
+      color: white;
+      font-weight: bold;
+    }
+
+    .btn-status {
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .btn-status:hover {
+      transform: translateY(-2px);
+    }
+
+    .text-red {
+      color: #ff0000 !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar for Cook -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background: #ff0000;">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="cook-dashboard.html">
+        <i class="fas fa-chef-hat me-2"></i> Cook Dashboard
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="#" id="cook-logout">
+              <i class="fas fa-sign-out-alt me-1"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-header">
+    <div class="container">
+      <h2 class="mb-1">Welcome Back, <span id="cook-name">Chef</span>!</h2>
+      <p>Manage your assigned orders and update status</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row g-4">
+      <!-- Assigned Orders -->
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-utensils me-2"></i> Your Assigned Orders</h5>
+          </div>
+          <div class="card-body" id="assigned-orders">
+            <p class="text-center text-muted">Loading your orders...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="col-lg-4">
+        <div class="card shadow">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i> Today's Summary</h5>
+          </div>
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <h6>Orders Completed Today</h6>
+              <h3 class="text-red fw-bold" id="completed-count">0</h3>
+            </div>
+            <div class="text-center">
+              <h6>Earnings Today</h6>
+              <h3 class="text-red fw-bold">₹<span id="earnings">0</span></h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow mt-4">
+          <div class="card-body text-center">
+            <h6>Need Help?</h6>
+            <p class="text-muted small">Contact support via WhatsApp</p>
+            <a href="https://wa.me/919876543210" class="btn btn-outline-danger">
+              <i class="fab fa-whatsapp me-2"></i> Chat Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { auth, db, collection, getDocs, query, where, updateDoc, doc } from './firebase-config.js';
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = 'cook-login.html';
+        return;
+      }
+
+      // Show cook name
+      document.getElementById('cook-name').textContent = user.displayName || user.email.split('@')[0] || 'Chef';
+
+      // Load assigned orders
+      const q = query(collection(db, 'orders'), where("assignedCookUid", "==", user.uid));
+      const snapshot = await getDocs(q);
+
+      const ordersDiv = document.getElementById('assigned-orders');
+      ordersDiv.innerHTML = '';
+
+      if (snapshot.empty) {
+        ordersDiv.innerHTML = '<p class="text-muted text-center">No orders assigned to you yet.</p>';
+      } else {
+        snapshot.forEach((docSnap) => {
+          const order = docSnap.data();
+          const orderId = docSnap.id;
+
+          ordersDiv.innerHTML += `
+            <div class="card mb-3">
+              <div class="card-body">
+                <h6 class="card-title">Order #${orderId.slice(0, 8)}</h6>
+                <p class="card-text mb-1"><strong>Items:</strong> ${order.items?.map(i => i.name).join(', ') || 'N/A'}</p>
+                <p class="card-text mb-1"><strong>Total:</strong> ₹${order.total || 0}</p>
+                <p class="card-text mb-1"><strong>Customer Location:</strong> ${order.deliveryLocation || 'N/A'}</p>
+                <p class="card-text mb-3"><strong>Current Status:</strong> 
+                  <span class="fw-bold text-capitalize text-red">${order.status || 'Received'}</span>
+                </p>
+
+                <div class="btn-group gap-2">
+                  <button class="btn btn-warning btn-sm update-status" data-id="${orderId}" data-status="preparing">
+                    Start Preparing
+                  </button>
+                  <button class="btn btn-success btn-sm update-status" data-id="${orderId}" data-status="ready">
+                    Mark Ready
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      // Simple earnings placeholder (update later)
+      document.getElementById('completed-count').textContent = snapshot.size; // temp
+      document.getElementById('earnings').textContent = (snapshot.size * 50).toFixed(0); // temp: ₹50 per order
+    });
+
+// Handle status updates
+    document.addEventListener('click', async (e) => {
+      if (e.target.classList.contains('update-status')) {
+        const orderId = e.target.dataset.id;
+        const newStatus = e.target.dataset.status;
+
+        if (confirm(`Update order #${orderId.slice(0,8)} to "${newStatus}"?`)) {
+          try {
+            await updateDoc(doc(db, 'orders', orderId), {
+              status: newStatus,
+              lastUpdated: new Date(),
+              updatedBy: 'cook'
+            });
+            alert("Status updated successfully!");
+            location.reload();
+          } catch (error) {
+            console.error("Update error:", error);
+            alert("Failed to update status: " + error.message);
+          }
+        }
+      }
+    });
+
+    // Logout - moved outside onAuthStateChanged to ensure it always works
+    const logoutBtn = document.getElementById('cook-logout');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await auth.signOut();
+          window.location.href = 'cook-login.html';
+        } catch (error) {
+          console.error("Logout error:", error);
+          alert("Failed to logout: " + error.message);
+        }
+      });
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
